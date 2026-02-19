@@ -51,7 +51,7 @@ def load_age_data():
 
     response = requests.get(url, headers={"Accept": "text/csv"})
 
-     if response.status_code != 200:
+    if response.status_code != 200:
         st.error("OECD population API request failed.")
         st.stop()
          
