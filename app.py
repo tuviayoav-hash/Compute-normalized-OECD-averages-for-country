@@ -32,7 +32,7 @@ use_log_y = st.checkbox("Use log of expenditure", value=True)
 def load_age_data():
     countries = (
         "AUT+BEL+CAN+CHL+COL+CRI+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+"
-        "JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+AUS"
+        "JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+W+AUS"
     )
 
     ages = (
@@ -50,7 +50,19 @@ def load_age_data():
     )
 
     response = requests.get(url, headers={"Accept": "text/csv"})
+
+     if response.status_code != 200:
+        st.error("OECD population API request failed.")
+        st.stop()
+         
     df = pd.read_csv(StringIO(response.text))
+
+    # DEBUG SAFETY: ensure expected columns exist
+        expected_cols = {"REF_AREA", "TIME_PERIOD", "AGE", "OBS_VALUE"}
+        if not expected_cols.issubset(set(df.columns)):
+            st.error("Unexpected column structure from OECD population API.")
+            st.write("Returned columns:", df.columns.tolist())
+            st.stop()
 
     df = df[["REF_AREA", "TIME_PERIOD", "AGE", "OBS_VALUE"]]
     df.columns = ["Country", "Year", "Age", "Population"]
