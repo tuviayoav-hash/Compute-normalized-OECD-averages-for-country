@@ -58,8 +58,8 @@ def load_age_data():
     df = pd.read_csv(StringIO(response.text))
 
     # DEBUG SAFETY: ensure expected columns exist
-        expected_cols = {"REF_AREA", "TIME_PERIOD", "AGE", "OBS_VALUE"}
-        if not expected_cols.issubset(set(df.columns)):
+    expected_cols = {"REF_AREA", "TIME_PERIOD", "AGE", "OBS_VALUE"}
+    if not expected_cols.issubset(set(df.columns)):
             st.error("Unexpected column structure from OECD population API.")
             st.write("Returned columns:", df.columns.tolist())
             st.stop()
