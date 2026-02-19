@@ -49,11 +49,21 @@ def load_age_data():
         f"{key}"
     )
 
-    response = requests.get(url, headers={"Accept": "text/csv"})
+    response = requests.get(
+        url,
+        headers={
+            "Accept": "text/csv",
+            "User-Agent": "Mozilla/5.0 (Streamlit App)"
+        },
+        timeout=30
+    )
+
 
     if response.status_code != 200:
-        st.error("OECD population API request failed.")
+        st.error(f"Status code: {response.status_code}")
+        st.write(response.text[:500])
         st.stop()
+
          
     df = pd.read_csv(StringIO(response.text))
 
