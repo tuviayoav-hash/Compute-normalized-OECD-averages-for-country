@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 from io import StringIO
 from linearmodels.panel import PanelOLS
 
@@ -166,15 +166,34 @@ else:
 # PLOT
 # ===============================
 
-fig, ax = plt.subplots(figsize=(10,6))
+fig = go.Figure()
 
-ax.plot(actual.index, actual.values, label=f"{country_name} Actual")
-ax.plot(oecd_mean.index, oecd_mean.values, label="OECD Mean")
-ax.plot(y_hat.index, y_hat.values, label="OECD Normalized")
+fig.add_trace(go.Scatter(
+    x=actual.index,
+    y=actual.values,
+    mode="lines",
+    name=f"{country_name} Actual"
+))
 
-ax.set_xlabel("Year")
-ax.set_ylabel("Expenditure (PPP per capita)")
-ax.legend()
-ax.grid(True)
+fig.add_trace(go.Scatter(
+    x=oecd_mean.index,
+    y=oecd_mean.values,
+    mode="lines",
+    name="OECD Mean"
+))
 
+fig.add_trace(go.Scatter(
+    x=y_hat.index,
+    y=y_hat.values,
+    mode="lines",
+    name="OECD Normalized"
+))
+
+fig.update_layout(
+    xaxis_title="Year",
+    yaxis_title="Expenditure (PPP per capita)",
+    template="plotly_white"
+)
+
+st.plotly_chart(fig, use_container_width=True)
 st.pyplot(fig)
