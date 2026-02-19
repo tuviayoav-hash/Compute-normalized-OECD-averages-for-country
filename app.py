@@ -41,7 +41,7 @@ def load_age_data():
         "Y75T79+Y80T84+Y_GE85"
     )
 
-    key = f"{countries}.POP.PS.T.{ages}."
+    key = f"{countries}.POP.PS._T.{ages}."
 
     url = (
         "https://sdmx.oecd.org/public/rest/data/"
@@ -83,8 +83,12 @@ def load_outcome():
         "ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+"
         "PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA"
     )
-
-    key = f"{countries}.A.EXP_HEALTH.USD_PPP_PS.T.._T._T._T...Q"
+    
+    unit_of_measure = "USD_PPP_PS"
+    
+    financing_scheme = "_T"
+    
+    key = f"{countries}.A.EXP_HEALTH.{unit_of_measure}.{financing_scheme}.._T._T._T...Q"
 
     url = (
         "https://sdmx.oecd.org/public/rest/data/"
