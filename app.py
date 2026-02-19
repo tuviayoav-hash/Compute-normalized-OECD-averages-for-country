@@ -41,7 +41,7 @@ def load_age_data():
         "Y75T79+Y80T84+Y_GE85"
     )
 
-    key = f"{countries}.POP.PS.T.{ages}"
+    key = f"{countries}.POP.PS.T.{ages}."
 
     url = (
         "https://sdmx.oecd.org/public/rest/data/"
