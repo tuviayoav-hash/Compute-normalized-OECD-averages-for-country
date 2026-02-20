@@ -14,6 +14,7 @@ st.markdown(
     However, as different countries have different age compositions, their actual need for health system inputs changes:
     - On the one hand, countries like Germany and Japan - with an older population mix - might have more need for said inputs than others;
     - On the other hand, countries like Israel and Mexico - with a much younger population - might have less need for said inputs.
+    
     To tackle this issue, this small app allows comparing a country's input aggregate with the appropriate OECD average, normalized to said country's age structure.
     Have a go!
     """
