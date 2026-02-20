@@ -70,8 +70,32 @@ OUTCOME_MAP = {
     "Health Expenditure, Total, Per Capita, USD (PPP)": {
         "file": "health_exp_ppp_total.csv",
         "use_log": True
-    }
+    },
 
+    "Health Expenditure, Public, Per Capita, USD (PPP)": {
+        "file": "health_exp_ppp_public.csv",
+        "use_log": True
+    },
+
+    "Health Expenditure, Private, Per Capita, USD (PPP)": {
+        "file": "health_exp_ppp_private.csv",
+         "use_log": True
+    },
+
+    "Physicians, Active, per 1,000 Inhabitants": {
+        "file": "physicians_active.csv",
+        "use_log": False
+    },
+
+    "Nurses, Active, per 1,000 Inhabitants": {
+        "file": "nurses_active.csv",
+        "use_log": False
+    },
+
+    "Hospital Beds, Curative, per 1,000 Inhabitants": {
+        "file": "hospital_beds.csv",
+        "use_log": True
+    }
 }
 
 # ===============================
@@ -107,7 +131,7 @@ min_countries = st.selectbox(
 exclude_usa = st.checkbox("Exclude USA from the analysis?", value=False)
 st.caption(
     "The United States has structurally different health system characteristics "
-    "(financing mix, price levels, insurance structure) than the rest of the OECD countries."
+    "(financing mix, price levels, insurance structure) than the rest of the OECD countries, "
     "which may influence the prediction results."
 )
 
@@ -291,7 +315,7 @@ In the second stage, the normalized OECD average is predicted using the country'
 )
 
 st.latex(r"""
-\hat{Y}_{it} = \alpha + \hat{\beta} X_{\text{country},t}
+\hat{Y}_{it} = \alpha + \hat{\beta} X_{it}
 """)
 
 st.markdown(
