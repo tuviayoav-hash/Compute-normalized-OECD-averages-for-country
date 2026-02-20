@@ -257,21 +257,25 @@ The first stage estimates the following regression:
 )
 
 st.latex(r"""
-Y_{it} = \alpha + \beta' X_{it} + \delta_i + \gamma_t + \varepsilon_{it}
+Y_{it} = \alpha + \beta X_{it} + \delta_i + \gamma_t + \varepsilon_{it}
+""")
+
+st.latex(r"""
+\begin{aligned}
+\text{Where:} \\
+\\
+Y_{it} &: \text{Outcome variable for country } i \text{ in year } t \\
+\alpha &: \text{Model-wide intercept} \\
+X_{it} &: \text{Vector of 5-year age-share proportions} \\
+\beta &: \text{Vector of estimated coefficients} \\
+\gamma_t &: \text{Year fixed effects} \\
+\delta_i &: \text{Country fixed effects} \\
+\varepsilon_{it} &: \text{Error term}
+\end{aligned}
 """)
 
 st.markdown(
 """
-Where:
-
-- \(Y_{it}\): Outcome variable for country *i* in year *t*  
-- \(\alpha\): Model-wide intercept  
-- \(X_{it}\): Vector of 5-year age-share proportions  
-- \(\beta\): Vector of estimated coefficients  
-- \(\gamma_t\): Year fixed effects  
-- \(\delta_i\): Country fixed effects  
-- \(\varepsilon_{it}\): Error term  
-
 Estimation is performed using the within-transformation for fixed effects, which imposes:
 """
 )
@@ -287,7 +291,7 @@ In the second stage, the normalized OECD average is predicted using the country'
 )
 
 st.latex(r"""
-\hat{Y}_{it} = \alpha + \hat{\beta}' X_{\text{country},t}
+\hat{Y}_{it} = \alpha + \hat{\beta} X_{\text{country},t}
 """)
 
 st.markdown(
