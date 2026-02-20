@@ -310,6 +310,12 @@ st.latex(r"""
 
 st.markdown(
 """
+Also note that for some of the outcomes - for example, the health expenditures, and the hospital beds - data suggests it is better to use log-transformed values in the analysis".
+"""
+)
+
+st.markdown(
+"""
 In the second stage, the normalized OECD average is predicted using the country's age structure while excluding the country-specific fixed effect.
 """
 )
