@@ -102,9 +102,16 @@ OUTCOME_MAP = {
 # USER INPUT
 # ===============================
 
+country_list = sorted(COUNTRY_MAP.keys())
+
+default_country = "Israel"
+
+default_index = country_list.index(default_country) if default_country in country_list else 0
+
 country_label = st.selectbox(
     "Select Country",
-    sorted(COUNTRY_MAP.keys())
+    country_list,
+    index=default_index
 )
 
 
@@ -133,7 +140,7 @@ st.caption(
     "However, this comes on the expense of 'losing' years from the graph. "
 )
 
-exclude_usa = st.checkbox("Exclude USA from the analysis?", value=False)
+exclude_usa = st.checkbox("Exclude USA from the analysis?", value=True)
 st.caption(
     "The United States has structurally different health system characteristics "
     "(financing mix, price levels, insurance structure) than the rest of the OECD countries, "
