@@ -108,7 +108,7 @@ if eligible_years.empty:
     st.error("No years satisfy minimum country threshold.")
     st.stop()
 
-first_year = valid_years.min()
+first_year = eligible_years.index.min()
 
 # Drop last year from data, as it tends to have a lot of missings
 last_year = df_reg["Year"].max()
