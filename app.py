@@ -180,27 +180,41 @@ fig.add_trace(go.Scatter(
     x=actual.index,
     y=actual.values,
     mode="lines",
-    name=f"{country_label} Actual"
+    name=f"{country_label} Actual Values"
 ))
 
 fig.add_trace(go.Scatter(
     x=oecd_mean.index,
     y=oecd_mean.values,
     mode="lines",
-    name="OECD Mean"
+    name="OECD Actual Mean (Geometric)" if use_log_y else "OECD Actual Mean (Arithmetic)"
+
 ))
 
 fig.add_trace(go.Scatter(
     x=y_hat.index,
     y=y_hat.values,
     mode="lines",
-    name="OECD Normalized"
+    name="OECD Age-Structure Normalized Mean"
 ))
+
+fig.add_annotation(
+    text="Prediction analysis estimated in natural logarithms"
+         if use_log_y
+         else "Prediction analysis estimated in levels",
+    xref="paper",
+    yref="paper",
+    x=0,
+    y=-0.15,
+    showarrow=False,
+    font=dict(size=12),
+    align="left"
+)
 
 fig.update_layout(
     xaxis_title="Year",
-    yaxis_title="Expenditure (PPP per capita)",
-    template="plotly_white"
+    yaxis_title=f"{selected_outcome}",
+    margin=dict(b=100)
 )
 
 st.plotly_chart(fig, use_container_width=True)
