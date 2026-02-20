@@ -69,6 +69,7 @@ country_label = st.selectbox(
     "Select Country",
     sorted(COUNTRY_MAP.keys())
 )
+exclude_usa = st.checkbox("Exclude USA from the analysis?", value=False)
 
 country_code = COUNTRY_MAP[country_label]
 
@@ -83,7 +84,6 @@ selected_outcome = OUTCOME_MAP[outcome_label]
 table_name = selected_outcome["file"]
 use_log_y = selected_outcome["use_log"]
 
-exclude_usa = st.checkbox("Exclude USA from the analysis?", value=False)
 min_countries = st.selectbox(
     "Minimum countries required",
     [5, 10, 15, 20],
