@@ -7,41 +7,100 @@ from io import StringIO
 from linearmodels.panel import PanelOLS
 
 st.set_page_config(layout="wide")
-st.title("OECD Health Expenditure & Age Structure")
+st.title("OECD Health System Aggregates & Age Structure")
+
+# ===============================
+# MAPS
+# ===============================
+COUNTRY_MAP = {
+    "Australia": "AUS",
+    "Austria": "AUT",
+    "Belgium": "BEL",
+    "Canada": "CAN",
+    "Chile": "CHL",
+    "Colombia": "COL",
+    "Costa Rica": "CRI",
+    "Czech Republic": "CZE",
+    "Denmark": "DNK",
+    "Estonia": "EST",
+    "Finland": "FIN",
+    "France": "FRA",
+    "Germany": "DEU",
+    "Greece": "GRC",
+    "Hungary": "HUN",
+    "Iceland": "ISL",
+    "Ireland": "IRL",
+    "Israel": "ISR",
+    "Italy": "ITA",
+    "Japan": "JPN",
+    "Korea": "KOR",
+    "Latvia": "LVA",
+    "Lithuania": "LTU",
+    "Luxembourg": "LUX",
+    "Mexico": "MEX",
+    "Netherlands": "NLD",
+    "New Zealand": "NZL",
+    "Norway": "NOR",
+    "Poland": "POL",
+    "Portugal": "PRT",
+    "Slovak Republic": "SVK",
+    "Slovenia": "SVN",
+    "Spain": "ESP",
+    "Sweden": "SWE",
+    "Switzerland": "CHE",
+    "Türkiye": "TUR",
+    "United Kingdom": "GBR",
+    "United States": "USA"
+}
+
+OUTCOME_MAP = {
+    "Health Expenditure, Total, Per Capita, USD (PPP)": {
+        "file": "health_exp_ppp_total.csv",
+        "use_log": True
+    }
+
+}
 
 # ===============================
 # USER INPUT
 # ===============================
 
-country_name = st.selectbox(
+country_label = st.selectbox(
     "Select Country",
-    ["AUS","AUT","BEL","CAN","CHL","COL","CRI","CZE","DNK","EST",
-     "FIN","FRA","DEU","GRC","HUN","ISL","IRL","ISR","ITA","JPN",
-     "KOR","LVA","LTU","LUX","MEX","NLD","NZL","NOR","POL","PRT",
-     "SVK","SVN","ESP","SWE","CHE","TUR","GBR","USA"]
+    sorted(COUNTRY_MAP.keys())
 )
 
-outcome = st.selectbox(
-    "Select outcome of interest",
-    ["health_exp_ppp_total"]
+country_code = COUNTRY_MAP[country_label]
+
+
+outcome_label = st.selectbox(
+    "Select Health Input of Interest",
+    OUTCOME_MAP.keys()
 )
 
-first_year = st.slider("Start Year", 1980, 2015, 1995)
-use_log_y = st.checkbox("Use log of expenditure", value=True)
+selected_outcome = OUTCOME_MAP[outcome_label]
+
+table_name = selected_outcome["file"]
+use_log_y = selected_outcome["use_log"]
+
+exclude_usa = st.checkbox("Exclude USA from the analysis?", value=False)
 
 # ===============================
 # RUN PIPELINE
 # ===============================
 
 df_age = pd.read_csv("data/age_data.csv")
-df_outcome = pd.read_csv("data/health_exp_ppp_total.csv")
+df_outcome = pd.read_csv(f"data/{table_name}")
 
 df_reg = df_age.merge(df_outcome, on=["Country", "Year"], how="inner")
 
+if exclude_usa:
+    df_reg = df_reg[df_reg["Country"] != "USA"].copy()
+    
 last_year = df_reg["Year"].max()
-df_reg = df_reg[(df_reg["Year"] >= first_year) & (df_reg["Year"] < last_year)].copy()
 
-y_col = "Health_Exp"
+df_reg = df_reg[(df_reg["Year"] < last_year).copy()
+
 
 if use_log_y:
     if (df_reg[y_col] <= 0).any():
@@ -55,7 +114,7 @@ X_cols = [c for c in age_cols if c != oldest_age]
 
 df_reg = df_reg.set_index(["Country","Year"]).sort_index()
 
-y = df_reg[y_col]
+y = df_reg["Outcome"]
 X = df_reg[X_cols]
 
 mod = PanelOLS(y, X, entity_effects=True, time_effects=True)
@@ -78,7 +137,7 @@ alpha = (r - mu.reindex(df_reg.index.get_level_values("Country")).values
 # PREDICTION (NO COUNTRY FE)
 # ===============================
 
-df_country = df_reg.xs(country_name, level="Country")
+df_country = df_reg.xs(country_code, level="Country")
 xb = df_country[X_cols] @ beta
 
 y_hat = alpha + xb + gamma.reindex(df_country.index).values
