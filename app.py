@@ -213,8 +213,9 @@ fig.add_annotation(
 
 fig.update_layout(
     xaxis_title="Year",
-    yaxis_title=f"{selected_outcome}",
-    margin=dict(b=100)
+    yaxis_title=f"{outcome_label}",
+    margin=dict(b=100),
+    template="plotly_white"
 )
 
 st.plotly_chart(fig, use_container_width=True)
