@@ -75,5 +75,7 @@ for outcome, config in OUTCOMES.items():
         continue
 
     df = pd.read_csv(StringIO(response.text))
+    df = df[["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]]
+    df.columns = ["Country", "Year", "Outcome"]
 
     df.to_csv(f"{outcome}.csv", index=False)
