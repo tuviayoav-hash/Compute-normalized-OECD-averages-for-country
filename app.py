@@ -310,6 +310,7 @@ st.latex(
     \begin{aligned}
     Y_{it} - \hat{Y}_{it} = delta_i + \varepsilon_{it}
     \end{aligned}
+    """
 )
     
 
