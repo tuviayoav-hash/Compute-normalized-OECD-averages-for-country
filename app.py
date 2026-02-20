@@ -128,7 +128,7 @@ min_countries = st.selectbox(
     index=1
 )
 st.caption(
-    "Not all country data starts at the same year; some start early, some later on. "
+    "Not all country data starts at the same year: some start early, some later on. "
     "To have more robust results, it is better to include in the analysis full panel data. "
     "However, this comes on the expense of 'losing' years from the graph. "
 )
