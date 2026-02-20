@@ -84,8 +84,11 @@ table_name = selected_outcome["file"]
 use_log_y = selected_outcome["use_log"]
 
 exclude_usa = st.checkbox("Exclude USA from the analysis?", value=False)
-min_countries = st.number_input("Minimum countries with full data", 10, 30, 15)
-
+min_countries = st.selectbox(
+    "Minimum countries required",
+    [5, 10, 15, 20],
+    index=1
+)
 # ===============================
 # RUN PIPELINE
 # ===============================
