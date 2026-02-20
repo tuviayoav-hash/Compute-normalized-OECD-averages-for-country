@@ -160,7 +160,7 @@ fig.add_trace(go.Scatter(
     x=actual.index,
     y=actual.values,
     mode="lines",
-    name=f"{country_name} Actual"
+    name=f"{country_label} Actual"
 ))
 
 fig.add_trace(go.Scatter(
