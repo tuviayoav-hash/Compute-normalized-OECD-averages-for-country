@@ -99,7 +99,7 @@ if exclude_usa:
     
 last_year = df_reg["Year"].max()
 
-df_reg = df_reg[(df_reg["Year"] < last_year).copy()
+df_reg = df_reg[(df_reg["Year"] < last_year)].copy()
 
 
 if use_log_y:
