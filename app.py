@@ -326,7 +326,7 @@ In the second stage, the normalized OECD average is predicted using the country'
 )
 
 st.latex(r"""
-\hat{Y}_{it} = \alpha + \hat{\beta} X_{it}
+\hat{Y}_{it} = \alpha + \hat{\beta} X_{it} + \gamma_t 
 """)
 
 st.markdown(
