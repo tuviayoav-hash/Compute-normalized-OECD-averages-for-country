@@ -84,6 +84,7 @@ table_name = selected_outcome["file"]
 use_log_y = selected_outcome["use_log"]
 
 exclude_usa = st.checkbox("Exclude USA from the analysis?", value=False)
+min_countries = st.number_input("Minimum countries with full data", 10, 30, 15)
 
 # ===============================
 # RUN PIPELINE
@@ -94,12 +95,28 @@ df_outcome = pd.read_csv(f"data/{table_name}")
 
 df_reg = df_age.merge(df_outcome, on=["Country", "Year"], how="inner")
 
+
 if exclude_usa:
     df_reg = df_reg[df_reg["Country"] != "USA"].copy()
     
+
+
+year_counts = df_reg.groupby("Year")["Country"].nunique()
+eligible_years = year_counts[year_counts >= min_countries]
+
+if eligible_years.empty:
+    st.error("No years satisfy minimum country threshold.")
+    st.stop()
+
+first_year = valid_years.min()
+
+# Drop last year from data, as it tends to have a lot of missings
 last_year = df_reg["Year"].max()
 
-df_reg = df_reg[(df_reg["Year"] < last_year)].copy()
+df_reg = df_reg[
+    (df_reg["Year"] >= first_year) &
+    (df_reg["Year"] < last_year)
+].copy()
 
 
 if use_log_y:
