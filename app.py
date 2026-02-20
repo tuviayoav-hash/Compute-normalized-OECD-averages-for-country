@@ -247,54 +247,58 @@ st.plotly_chart(fig, use_container_width=True)
 # ===============================
 
 
-st.latex(
-    r"""
-    \Large \underline{\text{Some methodological info for the nerds}} \\[10pt]
-    \normalsize
-    \text{The underlying prediction analysis is conducted in two stages.} \\
-    \text{The first stage computes a simple regression:} \\
-    \begin{aligned}
-    Y_{it} &= \alpha + \beta' X_{it} + \delta_i + \gamma_t + \varepsilon_{it} \\
-    \end{aligned}
-    \\
-    \text{Where:} \\
-    \\
-    Y_{it} &:\ \text{Outcome variable for country } i \text{ in year } t \\
-    \\
-    \alpha &:\ \text{Model-wide intercept} \\
-    \\
-    X_{it} &:\ \text{Vector of independent variables (5-year age-share proportions)} \\
-    \\
-    \beta &:\ \text{Vector of estimated coefficients} \\
-    \\
-    \gamma_t &:\ \text{Year fixed effects} \\
-    \\
-    \delta_i &:\ \text{Country fixed effects} \\
-    \\
-    \varepsilon_{it} &:\ \text{Error term}
-    \\
-    \\
-    \\
-    \text{Note that the estimation is performed using the within-transformation for fixed effects.} \\
-    \text{This approach imposes the normalization that the sum of all country fixed effects equals zero:} \\
-    \begin{aligned}
-    \sum_{i} \delta_i = 0
-    \end{aligned}
-    \\
-    \\
-    \\
-    \text{The second stage predicts the normalized OECD average, where X is set for the specific country's age mix, and WITHOUT the country's specific fixed effect (only the model-wide intercept).} \\
-    \text{The specific equation is:} \\
-    \begin{aligned}
-    \hat{Y}_{it} = \alpha + \hat{\beta} X_{\text_{it}
-    \end{aligned}
-    \\
-    \\
-    \text{n fact, the gap between this predicted value to the actual OECD average, is just:} \\
-    \begin{aligned}
-    Y_{it} - \hat{Y}_{it} = delta_i + \varepsilon_{it}
-    \end{aligned}
-    """
-)
+st.latex(r"""
+\Large \underline{\text{Some methodological information for the nerds}} \\[12pt]
+\normalsize
+
+\text{The underlying prediction analysis is conducted in two stages.} \\[4pt]
+\text{The first stage estimates the following regression:} \\[8pt]
+
+\begin{aligned}
+Y_{it} &= \alpha + \beta' X_{it} + \delta_i + \gamma_t + \varepsilon_{it}
+\end{aligned}
+
+\\[10pt]
+
+\text{Where:} \\[6pt]
+
+\begin{aligned}
+Y_{it} &: \text{Outcome variable for country } i \text{ in year } t \\
+\alpha &: \text{Model-wide intercept} \\
+X_{it} &: \text{Vector of independent variables (5-year age-share proportions)} \\
+\beta &: \text{Vector of estimated coefficients} \\
+\gamma_t &: \text{Year fixed effects} \\
+\delta_i &: \text{Country fixed effects} \\
+\varepsilon_{it} &: \text{Error term}
+\end{aligned}
+
+\\[10pt]
+
+\text{Estimation is performed using the within-transformation for fixed effects,} \\
+\text{which imposes the normalization:} \\[6pt]
+
+\begin{aligned}
+\sum_{i} \delta_i = 0
+\end{aligned}
+
+\\[12pt]
+
+\text{The second stage predicts the normalized OECD average.} \\
+\text{Age shares are set to the specific country's age composition,} \\
+\text{while excluding the country's fixed effect.} \\[8pt]
+
+\begin{aligned}
+\hat{Y}_{it} &= \alpha + \hat{\beta}' X_{\text{country},t}
+\end{aligned}
+
+\\[10pt]
+
+\text{The gap between the actual value and the predicted value is therefore:} \\[6pt]
+
+\begin{aligned}
+Y_{it} - \hat{Y}_{it} &= \delta_i + \varepsilon_{it}
+\end{aligned}
+""")
+
 
 
