@@ -199,22 +199,22 @@ fig.add_trace(go.Scatter(
 ))
 
 fig.add_annotation(
-    text="Prediction analysis estimated in natural logarithms"
+    text="* Prediction analysis estimated in natural logarithms"
          if use_log_y
-         else "Prediction analysis estimated in levels",
+         else "* Prediction analysis estimated in levels",
     xref="paper",
     yref="paper",
     x=0,
-    y=-0.15,
+    y=-0.25,
     showarrow=False,
-    font=dict(size=12),
+    font=dict(size=11, color="gray"),
     align="left"
 )
 
 fig.update_layout(
     xaxis_title="Year",
     yaxis_title=f"{outcome_label}",
-    margin=dict(b=100),
+    margin=dict(b=140),
     template="plotly_white"
 )
 
