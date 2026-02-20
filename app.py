@@ -328,7 +328,7 @@ Also note that for some of the outcomes - for example, the health expenditures, 
 
 st.markdown(
 """
-In the second stage, the normalized OECD average is predicted using the country's age structure while excluding the country-specific fixed effect.
+In the second stage, the normalized OECD average is predicted using the country's age structure while **excluding** the country-specific fixed effect.
 """
 )
 
