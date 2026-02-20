@@ -245,16 +245,17 @@ st.plotly_chart(fig, use_container_width=True)
 # ===============================
 # METHODOLOGICAL INFO
 # ===============================
-st.info(
-    "Some methodological info for the nerds:  /n"
-    "The underlying prediction analysis is conducted in two stages.  /n"
-    "The first stage computes a simple regression:"
-)
+
 
 st.latex(
     r"""
+    \Large \underline{\text{Some methodological info for the nerds}} \\[10pt]
+    \normalsize
+    \text{The underlying prediction analysis is conducted in two stages.} \\
+    \text{The first stage computes a simple regression:} \\
     \begin{aligned}
     Y_{it} &= \alpha + \beta' X_{it} + \delta_i + \gamma_t + \varepsilon_{it} \\
+    \end{aligned}
     \\
     \text{Where:} \\
     \\
@@ -271,47 +272,29 @@ st.latex(
     \delta_i &:\ \text{Country fixed effects} \\
     \\
     \varepsilon_{it} &:\ \text{Error term}
-    \end{aligned}
-    """
-)
-st.latex(
-    r"""
-    \begin{aligned}
+    \\
+    \\
+    \\
     \text{Note that the estimation is performed using the within-transformation for fixed effects.} \\
     \text{This approach imposes the normalization that the sum of all country fixed effects equals zero:} \\
-    \\
+    \begin{aligned}
     \sum_{i} \delta_i = 0
     \end{aligned}
-    """
-)
-
-
-st.info(
-    "The second stage predicts the normalized OECD average, "
-    "where X is set for the specific country's age mix, "
-    "and WITHOUT the country's specific fixed effect (only the model-wide intercept)  /n"
-    "The specific equation is:"
-)
-
-st.latex(
-    r"""
+    \\
+    \\
+    \\
+    \text{The second stage predicts the normalized OECD average, where X is set for the specific country's age mix, and WITHOUT the country's specific fixed effect (only the model-wide intercept).} \\
+    \text{The specific equation is:} \\
     \begin{aligned}
     \hat{Y}_{it} = \alpha + \hat{\beta} X_{\text_{it}
     \end{aligned}
-    """
-)
-
-st.info(
-    "In fact, the gap between this predicted value to the actual OECD average, is just:"
-)
-
-st.latex(
-    r"""
+    \\
+    \\
+    \text{n fact, the gap between this predicted value to the actual OECD average, is just:} \\
     \begin{aligned}
     Y_{it} - \hat{Y}_{it} = delta_i + \varepsilon_{it}
     \end{aligned}
     """
 )
-    
 
 
