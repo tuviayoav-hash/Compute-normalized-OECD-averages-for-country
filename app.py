@@ -7,7 +7,20 @@ from io import StringIO
 from linearmodels.panel import PanelOLS
 
 st.set_page_config(layout="wide")
-st.title("OECD Health System Aggregates & Age Structure")
+st.title("Normalizing OECD Health System Inputs to Country's Age Structure")
+st.info(
+    "Usually, to check how they are faring compared to others, " 
+    "countries' compare their health system's inputs aggregates to the normal OECD average.  \n"
+    "However, as different countries have different age compositions, "
+    "their actual need for health system inputs changes:  \n"
+    "On one hand, countries like Germany and Japan - with an older population mix - "
+    "might have more need for said inputs than others;  \n"
+    "On the other hand, countries like Israel and Mexico - with a much younger population - "
+    "might have less need for said inputs.  \n"
+    "To tackle this issue, this small app allows comparing a country's input aggregate with the "
+    "appropriate OECD average, normalized to said country's age structure.  \n"
+    "Have a go!"
+)
 
 # ===============================
 # MAPS
@@ -69,7 +82,8 @@ country_label = st.selectbox(
     "Select Country",
     sorted(COUNTRY_MAP.keys())
 )
-exclude_usa = st.checkbox("Exclude USA from the analysis?", value=False)
+
+
 
 country_code = COUNTRY_MAP[country_label]
 
@@ -89,6 +103,14 @@ min_countries = st.selectbox(
     [5, 10, 15, 20],
     index=1
 )
+
+exclude_usa = st.checkbox("Exclude USA from the analysis?", value=False)
+st.caption(
+    "The United States has structurally different health system characteristics "
+    "(financing mix, price levels, insurance structure) than the rest of the OECD countries."
+    "which may influence the prediction results."
+)
+
 # ===============================
 # RUN PIPELINE
 # ===============================
@@ -219,3 +241,76 @@ fig.update_layout(
 )
 
 st.plotly_chart(fig, use_container_width=True)
+
+# ===============================
+# METHODOLOGICAL INFO
+# ===============================
+st.info(
+    "Some methodological info for the nerds:  /n"
+    "The underlying prediction analysis is conducted in two stages.  /n"
+    "The first stage computes a simple regression:"
+)
+
+st.latex(
+    r"""
+    \begin{aligned}
+    Y_{it} &= \alpha + \beta' X_{it} + \delta_i + \gamma_t + \varepsilon_{it} \\
+    \\
+    \text{Where:} \\
+    \\
+    Y_{it} &:\ \text{Outcome variable for country } i \text{ in year } t \\
+    \\
+    \alpha &:\ \text{Model-wide intercept} \\
+    \\
+    X_{it} &:\ \text{Vector of independent variables (5-year age-share proportions)} \\
+    \\
+    \beta &:\ \text{Vector of estimated coefficients} \\
+    \\
+    \gamma_t &:\ \text{Year fixed effects} \\
+    \\
+    \delta_i &:\ \text{Country fixed effects} \\
+    \\
+    \varepsilon_{it} &:\ \text{Error term}
+    \end{aligned}
+    """
+)
+st.latex(
+    r"""
+    \begin{aligned}
+    \text{Note that the estimation is performed using the within-transformation for fixed effects.} \\
+    \text{This approach imposes the normalization that the sum of all country fixed effects equals zero:} \\
+    \\
+    \sum_{i} \delta_i = 0
+    \end{aligned}
+    """
+)
+
+
+st.info(
+    "The second stage predicts the normalized OECD average, "
+    "where X is set for the specific country's age mix, "
+    "and WITHOUT the country's specific fixed effect (only the model-wide intercept)  /n"
+    "The specific equation is:"
+)
+
+st.latex(
+    r"""
+    \begin{aligned}
+    \hat{Y}_{it} = \alpha + \hat{\beta} X_{\text_{it}
+    \end{aligned}
+    """
+)
+
+st.info(
+    "In fact, the gap between this predicted value to the actual OECD average, is just:"
+)
+
+st.latex(
+    r"""
+    \begin{aligned}
+    Y_{it} - \hat{Y}_{it} = delta_i + \varepsilon_{it}
+    \end{aligned}
+)
+    
+
+
