@@ -103,12 +103,12 @@ df_reg = df_reg[(df_reg["Year"] < last_year)].copy()
 
 
 if use_log_y:
-    if (df_reg[y_col] <= 0).any():
+    if (df_reg["Outcome"] <= 0).any():
         st.error("Non-positive expenditure values found.")
         st.stop()
-    df_reg[y_col] = np.log(df_reg[y_col])
+    df_reg["Outcome"] = np.log(df_reg["Outcome"])
 
-age_cols = [c for c in df_reg.columns if c not in ["Country","Year",y_col]]
+age_cols = [c for c in df_reg.columns if c not in ["Country","Year","Outcome"]]
 oldest_age = "Y_GE85"
 X_cols = [c for c in age_cols if c != oldest_age]
 
@@ -143,12 +143,12 @@ xb = df_country[X_cols] @ beta
 y_hat = alpha + xb + gamma.reindex(df_country.index).values
 
 if use_log_y:
-    actual = np.exp(df_country[y_col])
+    actual = np.exp(df_country["Outcome"])
     y_hat = np.exp(y_hat)
-    oecd_mean = np.exp(df_reg[y_col].groupby("Year").mean())
+    oecd_mean = np.exp(df_reg["Outcome"].groupby("Year").mean())
 else:
-    actual = df_country[y_col]
-    oecd_mean = df_reg[y_col].groupby("Year").mean()
+    actual = df_country["Outcome"]
+    oecd_mean = df_reg["Outcome"].groupby("Year").mean()
 
 # ===============================
 # PLOT
