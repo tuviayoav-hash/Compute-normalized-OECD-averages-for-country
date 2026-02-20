@@ -27,7 +27,7 @@ OUTCOMES = {
     "specs": "HSE.10P3HB...PHYS..P."
   },
 
-  "nurse_active": {
+  "nurses_active": {
     "source": "OECD.ELS.HD,DSD_HEALTH_EMP_REAC@DF_REAC,1.0/",
     "specs": "HSE.10P3HB...MINU..P."
   },
