@@ -21,119 +21,22 @@ country_name = st.selectbox(
      "SVK","SVN","ESP","SWE","CHE","TUR","GBR","USA"]
 )
 
+outcome = st.selectbox(
+    "Select outcome of interest",
+    ["health_exp_ppp_total"]
+)
+
 first_year = st.slider("Start Year", 1980, 2015, 1995)
 use_log_y = st.checkbox("Use log of expenditure", value=True)
-
-# ===============================
-# LOAD AGE DATA
-# ===============================
-
-@st.cache_data
-def load_age_data():
-    countries = (
-        "AUT+BEL+CAN+CHL+COL+CRI+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+"
-        "JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+W+AUS"
-    )
-
-    ages = (
-        "Y_LE4+Y5T9+Y10T14+Y15T19+Y20T24+Y25T29+Y30T34+Y35T39+"
-        "Y40T44+Y45T49+Y50T54+Y55T59+Y60T64+Y65T69+Y70T74+"
-        "Y75T79+Y80T84+Y_GE85"
-    )
-
-    key = f"{countries}.POP.PS._T.{ages}."
-
-    url = (
-        "https://sdmx.oecd.org/public/rest/data/"
-        "OECD.ELS.SAE,DSD_POPULATION@DF_POP_HIST,1.0/"
-        f"{key}"
-    )
-
-    response = requests.get(
-        url,
-        headers={
-            "Accept": "text/csv",
-            "User-Agent": "Mozilla/5.0 (Streamlit App)"
-        },
-        timeout=30
-    )
-
-
-    if response.status_code != 200:
-        st.error(f"Status code: {response.status_code}")
-        st.write(response.text[:500])
-        st.stop()
-
-         
-    df = pd.read_csv(StringIO(response.text))
-
-    # DEBUG SAFETY: ensure expected columns exist
-    expected_cols = {"REF_AREA", "TIME_PERIOD", "AGE", "OBS_VALUE"}
-    if not expected_cols.issubset(set(df.columns)):
-            st.error("Unexpected column structure from OECD population API.")
-            st.write("Returned columns:", df.columns.tolist())
-            st.stop()
-
-    df = df[["REF_AREA", "TIME_PERIOD", "AGE", "OBS_VALUE"]]
-    df.columns = ["Country", "Year", "Age", "Population"]
-
-    df["Population"] = pd.to_numeric(df["Population"], errors="coerce")
-    df = df.dropna()
-
-    df["Total_Pop"] = df.groupby(["Country", "Year"])["Population"].transform("sum")
-    df["Age_Share"] = df["Population"] / df["Total_Pop"]
-
-    df_wide = (
-        df.pivot_table(
-            index=["Country", "Year"],
-            columns="Age",
-            values="Age_Share"
-        ).reset_index()
-    )
-
-    df_wide.columns.name = None
-    return df_wide
-
-# ===============================
-# LOAD OUTCOME DATA
-# ===============================
-
-@st.cache_data
-def load_outcome():
-    countries = (
-        "AUS+AUT+BEL+CAN+CHL+COL+CRI+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+"
-        "ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+"
-        "PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA"
-    )
-    
-    unit_of_measure = "USD_PPP_PS"
-    
-    financing_scheme = "_T"
-    
-    key = f"{countries}.A.EXP_HEALTH.{unit_of_measure}.{financing_scheme}.._T._T._T...Q"
-
-    url = (
-        "https://sdmx.oecd.org/public/rest/data/"
-        "OECD.ELS.HD,DSD_SHA@DF_SHA,1.0/"
-        f"{key}"
-    )
-
-    response = requests.get(url, headers={"Accept": "text/csv"})
-    df = pd.read_csv(StringIO(response.text))
-
-    df = df[["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]]
-    df.columns = ["Country", "Year", "Health_Exp"]
-
-    return df
 
 # ===============================
 # RUN PIPELINE
 # ===============================
 
-df_wide = load_age_data()
-df_outcome = load_outcome()
+df_age = pd.read_csv("data/age_data.csv")
+df_outcome = pd.read_csv("data/health_exp_ppp_total.csv")
 
-df_reg = df_wide.merge(df_outcome, on=["Country", "Year"], how="inner")
+df_reg = df_age.merge(df_outcome, on=["Country", "Year"], how="inner")
 
 last_year = df_reg["Year"].max()
 df_reg = df_reg[(df_reg["Year"] >= first_year) & (df_reg["Year"] < last_year)].copy()
