@@ -247,58 +247,59 @@ st.plotly_chart(fig, use_container_width=True)
 # ===============================
 
 
+st.markdown("### Some methodological information for the nerds")
+
+st.markdown(
+"""
+The underlying prediction analysis is conducted in two stages.  
+The first stage estimates the following regression:
+"""
+)
+
 st.latex(r"""
-\Large \underline{\text{Some methodological information for the nerds}} \\[12pt]
-\normalsize
-
-\text{The underlying prediction analysis is conducted in two stages.} \\[4pt]
-\text{The first stage estimates the following regression:} \\[8pt]
-
-\begin{aligned}
-Y_{it} &= \alpha + \beta' X_{it} + \delta_i + \gamma_t + \varepsilon_{it}
-\end{aligned}
-
-\\[10pt]
-
-\text{Where:} \\[6pt]
-
-\begin{aligned}
-Y_{it} &: \text{Outcome variable for country } i \text{ in year } t \\
-\alpha &: \text{Model-wide intercept} \\
-X_{it} &: \text{Vector of independent variables (5-year age-share proportions)} \\
-\beta &: \text{Vector of estimated coefficients} \\
-\gamma_t &: \text{Year fixed effects} \\
-\delta_i &: \text{Country fixed effects} \\
-\varepsilon_{it} &: \text{Error term}
-\end{aligned}
-
-\\[10pt]
-
-\text{Estimation is performed using the within-transformation for fixed effects,} \\
-\text{which imposes the normalization:} \\[6pt]
-
-\begin{aligned}
-\sum_{i} \delta_i = 0
-\end{aligned}
-
-\\[12pt]
-
-\text{The second stage predicts the normalized OECD average.} \\
-\text{Age shares are set to the specific country's age composition,} \\
-\text{while excluding the country's fixed effect.} \\[8pt]
-
-\begin{aligned}
-\hat{Y}_{it} &= \alpha + \hat{\beta}' X_{\text{country},t}
-\end{aligned}
-
-\\[10pt]
-
-\text{The gap between the actual value and the predicted value is therefore:} \\[6pt]
-
-\begin{aligned}
-Y_{it} - \hat{Y}_{it} &= \delta_i + \varepsilon_{it}
-\end{aligned}
+Y_{it} = \alpha + \beta' X_{it} + \delta_i + \gamma_t + \varepsilon_{it}
 """)
+
+st.markdown(
+"""
+Where:
+
+- \(Y_{it}\): Outcome variable for country *i* in year *t*  
+- \(\alpha\): Model-wide intercept  
+- \(X_{it}\): Vector of 5-year age-share proportions  
+- \(\beta\): Vector of estimated coefficients  
+- \(\gamma_t\): Year fixed effects  
+- \(\delta_i\): Country fixed effects  
+- \(\varepsilon_{it}\): Error term  
+
+Estimation is performed using the within-transformation for fixed effects, which imposes:
+"""
+)
+
+st.latex(r"""
+\sum_i \delta_i = 0
+""")
+
+st.markdown(
+"""
+In the second stage, the normalized OECD average is predicted using the country's age structure while excluding the country-specific fixed effect.
+"""
+)
+
+st.latex(r"""
+\hat{Y}_{it} = \alpha + \hat{\beta}' X_{\text{country},t}
+""")
+
+st.markdown(
+"""
+The gap between the actual value and the predicted value is:
+"""
+)
+
+st.latex(r"""
+Y_{it} - \hat{Y}_{it} = \delta_i + \varepsilon_{it}
+""")
+
 
 
 
