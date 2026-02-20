@@ -11,11 +11,13 @@ st.title("Normalizing OECD Health System Inputs to Country's Age Structure")
 st.markdown(
     """
     Usually, to check how they are faring compared to others, countries' compare their health system's inputs aggregates to the normal OECD average.
+    
     However, as different countries have different age compositions, their actual need for health system inputs changes:
     - On the one hand, countries like Germany and Japan - with an older population mix - might have more need for said inputs than others;
     - On the other hand, countries like Israel and Mexico - with a much younger population - might have less need for said inputs.
     
     To tackle this issue, this small app allows comparing a country's input aggregate with the appropriate OECD average, normalized to said country's age structure.
+    
     Have a go!
     """
 )
@@ -121,9 +123,14 @@ table_name = selected_outcome["file"]
 use_log_y = selected_outcome["use_log"]
 
 min_countries = st.selectbox(
-    "Minimum countries required",
+    "Minimum countries required in the analysis",
     [5, 10, 15, 20],
     index=1
+)
+st.caption(
+    "Not all country data starts at the same year; some start early, some later on. "
+    "To have more robust results, it is better to include in the analysis full panel data. "
+    "However, this comes on the expense of 'losing' years from the graph. "
 )
 
 exclude_usa = st.checkbox("Exclude USA from the analysis?", value=False)
