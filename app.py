@@ -257,19 +257,6 @@ fig.add_trace(go.Scatter(
     name="OECD Age-Normalized Avg"
 ))
 
-fig.add_annotation(
-    text="* Prediction analysis estimated in natural logarithms"
-         if use_log_y
-         else "* Prediction analysis estimated in levels",
-    xref="paper",
-    yref="paper",
-    x=0,
-    y=-0.25,
-    showarrow=False,
-    font=dict(size=11, color="gray"),
-    align="left"
-)
-
 fig.update_layout(
     xaxis_title="Year",
     yaxis_title=f"{outcome_label}",
