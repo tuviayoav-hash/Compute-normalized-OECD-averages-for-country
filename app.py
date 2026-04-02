@@ -8,16 +8,6 @@ from linearmodels.panel import PanelOLS
 
 st.set_page_config(layout="wide")
 
-st.markdown("""
-    <style>
-    .main .block-container {
-        padding-left: 0rem;
-        padding-right: 0rem;
-        max-width: 100%;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
 st.title("Normalizing OECD Health System Inputs to Country's Age Structure")
 st.markdown(
     """
@@ -249,14 +239,14 @@ fig.add_trace(go.Scatter(
     x=actual.index,
     y=actual.values,
     mode="lines",
-    name=f"{country_label} Actual Values"
+    name=f"{country_label}"
 ))
 
 fig.add_trace(go.Scatter(
     x=oecd_mean.index,
     y=oecd_mean.values,
     mode="lines",
-    name="OECD Actual Mean (Geometric)" if use_log_y else "OECD Actual Mean (Arithmetic)"
+    name="OECD Average"
 
 ))
 
@@ -264,7 +254,7 @@ fig.add_trace(go.Scatter(
     x=y_hat.index,
     y=y_hat.values,
     mode="lines",
-    name="OECD Age-Structure Normalized Mean"
+    name="OECD Age-Normalized Avg"
 ))
 
 fig.add_annotation(
