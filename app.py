@@ -8,8 +8,6 @@ from linearmodels.panel import PanelOLS
 
 st.set_page_config(layout="wide")
 
-st.plotly_chart(fig, use_container_width=True)
-
 st.title("Normalizing OECD Health System Inputs to Country's Age Structure")
 st.markdown(
     """
@@ -276,10 +274,9 @@ fig.update_layout(
     xaxis_title="Year",
     yaxis_title=f"{outcome_label}",
     margin=dict(b=140),
-    template="plotly_white"
+    template="plotly_white",
+    autosize=True
 )
-
-fig.update_layout(autosize=True)
 
 st.plotly_chart(fig, use_container_width=True)
 
