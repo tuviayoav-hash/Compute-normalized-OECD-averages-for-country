@@ -7,6 +7,11 @@ from io import StringIO
 from linearmodels.panel import PanelOLS
 
 st.set_page_config(layout="wide")
+
+fig.update_layout(autosize=True)
+
+st.plotly_chart(fig, use_container_width=True)
+
 st.title("Normalizing OECD Health System Inputs to Country's Age Structure")
 st.markdown(
     """
