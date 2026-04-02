@@ -273,7 +273,6 @@ fig.add_annotation(
 fig.update_layout(
     xaxis_title="Year",
     yaxis_title=f"{outcome_label}",
-    margin=dict(b=140),
     template="plotly_white",
     autosize=True,
     legend=dict(
