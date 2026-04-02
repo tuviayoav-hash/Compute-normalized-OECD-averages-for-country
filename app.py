@@ -275,7 +275,8 @@ fig.update_layout(
     yaxis_title=f"{outcome_label}",
     margin=dict(b=140),
     template="plotly_white",
-    autosize=True
+    autosize=True,
+    width=None
 )
 
 st.plotly_chart(fig, use_container_width=True)
