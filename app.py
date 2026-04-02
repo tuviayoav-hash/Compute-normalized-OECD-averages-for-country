@@ -276,7 +276,14 @@ fig.update_layout(
     margin=dict(b=140),
     template="plotly_white",
     autosize=True,
-    width=None
+    legend=dict(
+        orientation="h",
+        yanchor="top",
+        y=-0.25,
+        xanchor="center",
+        x=0.5
+    ),
+    margin=dict(b=160)
 )
 
 st.plotly_chart(fig, use_container_width=True)
